@@ -11,4 +11,11 @@ const auth = require("../../middlewares/auth");
 
 router.get("/:userId", auth, validateGetUser, userController.getUser);
 
+router.put(
+  "/:userId",
+  auth,
+  validate(userValidation.setAddress),
+  userController.setAddress
+);
+
 module.exports = router;
