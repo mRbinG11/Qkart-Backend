@@ -2,6 +2,10 @@ const httpStatus = require("http-status");
 const ApiError = require("../utils/ApiError");
 const catchAsync = require("../utils/catchAsync");
 const { userService } = require("../services");
+const { ObjectId, isValidObjectId } = require("mongoose");
+const {
+  collapseTextChangeRangesAcrossMultipleVersions,
+} = require("typescript");
 
 // TODO: CRIO_TASK_MODULE_UNDERSTANDING_BASICS - Implement getUser() function
 /**
@@ -43,9 +47,10 @@ const { userService } = require("../services");
  *
  */
 const getUser = catchAsync(async (req, res) => {
-  // console.log("getUser", req.params.userId);
+  if (req.user._id.toString() !== req.params.userId)
+    throw new ApiError(httpStatus.FORBIDDEN, "Please authenticate");
   const result = await userService.getUserById(req.params.userId);
-  if (result) res.status(200).json(result);
+  if (result) res.status(httpStatus.OK).json(result);
   else throw ApiError(httpStatus.NOT_FOUND, "User not found");
 });
 

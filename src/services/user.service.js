@@ -59,16 +59,17 @@ const getUserByEmail = async (email) => {
  * 200 status code on duplicate email - https://stackoverflow.com/a/53144807
  */
 const createUser = async (userBody) => {
-  try {
-    const isEmailTaken = User.isEmailTaken(userBody.email);
+ // try {
+    const isEmailTaken = await User.isEmailTaken(userBody.email);
     if (isEmailTaken) throw new ApiError(httpStatus.OK, "Email already taken");
-    else {
-      const result = await User.create(userBody);
-      return result;
-    }
-  } catch (err) {
-    throw err;
-  }
+
+    const hashedPassword = await bcrypt.hash(userBody.password, 5);
+    const user = await User.create({ ...userBody, password: hashedPassword });
+    return user;
+ // } 
+  // catch (err) {
+  //   throw err;
+  // }
 };
 
 module.exports = {

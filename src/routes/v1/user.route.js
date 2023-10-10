@@ -7,7 +7,8 @@ const router = express.Router();
 
 // TODO: CRIO_TASK_MODULE_UNDERSTANDING_BASICS - Implement a route definition for `/v1/users/:userId`
 const validateGetUser = validate(userValidation.getUser);
-router.get("/:userId", validateGetUser, userController.getUser);
 const auth = require("../../middlewares/auth");
+
+router.get("/:userId", auth, validateGetUser, userController.getUser);
 
 module.exports = router;
