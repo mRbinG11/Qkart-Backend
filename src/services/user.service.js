@@ -81,13 +81,14 @@ const createUser = async (userBody) => {
  * @returns {Promise<User>}
  */
 const getUserAddressById = async (id) => {
-  try {
-    const result = await User.findById(id, ["email", "address"]);
-    console.log(result);
-    return result;
-  } catch (err) {
-    console.log(err);
-  }
+  // try {
+  //   const result = await User.findById(id, ["email", "address"]);
+  //   console.log(result);
+  //   return result;
+  // } catch (err) {
+  //   console.log(err);
+  // }
+  return User.findOne({_id:id},{email:1,address:1})
 };
 
 /**

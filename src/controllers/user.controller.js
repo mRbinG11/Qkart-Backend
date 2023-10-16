@@ -59,7 +59,10 @@ const getUser = catchAsync(async (req, res) => {
     throw new ApiError(httpStatus.FORBIDDEN, "Please authenticate");
   if (req.query.q && req.query.q === "address") {
     const result = await userService.getUserAddressById(req.params.userId);
-    if (result) res.status(httpStatus.OK).json(result);
+    if (result)
+      res.status(httpStatus.OK).send({
+        address: result.address,
+      });
     else throw ApiError(httpStatus.NOT_FOUND, "User not found");
   } else {
     const result = await userService.getUserById(req.params.userId);
