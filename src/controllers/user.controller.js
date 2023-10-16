@@ -51,15 +51,21 @@ const {
  * HTTP 403 - If request data doesn't match that of authenticated user
  * HTTP 404 - If user entity not found in DB
  * 
- * @returns {User | {address: String}}
+ * @returns {User | {address: String}}F
  *
  */
 const getUser = catchAsync(async (req, res) => {
   if (req.user._id.toString() !== req.params.userId)
     throw new ApiError(httpStatus.FORBIDDEN, "Please authenticate");
-  const result = await userService.getUserById(req.params.userId);
-  if (result) res.status(httpStatus.OK).json(result);
-  else throw ApiError(httpStatus.NOT_FOUND, "User not found");
+  if (req.query.q && req.query.q === "address") {
+    const result = await userService.getUserAddressById(req.params.userId);
+    if (result) res.status(httpStatus.OK).json(result);
+    else throw ApiError(httpStatus.NOT_FOUND, "User not found");
+  } else {
+    const result = await userService.getUserById(req.params.userId);
+    if (result) res.status(httpStatus.OK).json(result);
+    else throw ApiError(httpStatus.NOT_FOUND, "User not found");
+  }
 });
 
 const setAddress = catchAsync(async (req, res) => {

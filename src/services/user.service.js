@@ -80,7 +80,15 @@ const createUser = async (userBody) => {
  * @param {ObjectId} id
  * @returns {Promise<User>}
  */
-const getUserAddressById = async (id) => {};
+const getUserAddressById = async (id) => {
+  try {
+    const result = await User.findById(id, ["email", "address"]);
+    console.log(result);
+    return result;
+  } catch (err) {
+    console.log(err);
+  }
+};
 
 /**
  * Set user's shipping address
@@ -98,4 +106,6 @@ module.exports = {
   getUserById,
   getUserByEmail,
   createUser,
+  getUserAddressById,
+  setAddress,
 };

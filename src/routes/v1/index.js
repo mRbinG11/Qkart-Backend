@@ -5,11 +5,14 @@ const router = express.Router();
 const userRoute = require("./user.route");
 router.use("/users", userRoute);
 
-// TODO: CRIO_TASK_MODULE_AUTH - Reroute all API requests beginning with the `/v1/auth` route to Express router in auth.route.js 
+// TODO: CRIO_TASK_MODULE_AUTH - Reroute all API requests beginning with the `/v1/auth` route to Express router in auth.route.js
 const authRoute = require("./auth.route");
 router.use("/auth", authRoute);
 
 const productRoute = require("./product.route");
 router.use("/products", productRoute);
+
+const cartRoute = require("./cart.route");
+router.use("/cart", cartRoute);
 
 module.exports = router;
