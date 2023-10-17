@@ -26,7 +26,6 @@ describe("Cart test", () => {
       mockingoose(Cart).toReturn(null, "findOne");
 
       const res = cartService.checkout(userOne);
-
       // TODO: CRIO_TASK_MODULE_TEST - Assert if
       /* - ApiError is thrown
        * - the "statusCode" field of response is "404 NOT FOUND"
@@ -38,7 +37,12 @@ describe("Cart test", () => {
        *  "stack": "<Error-stack-trace-if-present>"
        * }
        */
-       expect(true).toEqual(false);
+      expect(res).rejects.toThrow(ApiError);
+      expect(res).rejects.toEqual(
+        expect.objectContaining({
+          statusCode: httpStatus.NOT_FOUND,
+        })
+      );
     });
 
     it("should throw 400 error if user's cart doesn't have any product", async () => {
@@ -50,6 +54,12 @@ describe("Cart test", () => {
       // TODO: CRIO_TASK_MODULE_TEST - Assert if
       // - ApiError is thrown
       // - the "statusCode" field of response is "400 BAD REQUEST"
+      expect(res).rejects.toThrow(ApiError);
+      expect(res).rejects.toEqual(
+        expect.objectContaining({
+          statusCode: httpStatus.BAD_REQUEST,
+        })
+      );
     });
 
     it("should throw 400 error if address is not set - when User.hasSetNonDefaultAddress() returns false", async () => {
@@ -59,14 +69,21 @@ describe("Cart test", () => {
 
       // create a mock function for User model's hasSetNonDefaultAddress() instance method
       const hasSetNonDefaultAddressMock = jest.fn();
-      userTwo.hasSetNonDefaultAddress =
-        hasSetNonDefaultAddressMock.mockReturnValue(false);
+      userTwo.hasSetNonDefaultAddress = hasSetNonDefaultAddressMock.mockReturnValue(
+        false
+      );
 
       const res = cartService.checkout(userTwo);
 
       // TODO: CRIO_TASK_MODULE_TEST - Assert if
       // - ApiError is thrown
       // - the "statusCode" field of response is "400 BAD REQUEST"
+      expect(res).rejects.toThrow(ApiError);
+      expect(res).rejects.toEqual(
+        expect.objectContaining({
+          statusCode: httpStatus.BAD_REQUEST,
+        })
+      );
     });
 
     it("should throw 400 error if wallet balance is insufficient", async () => {
@@ -85,6 +102,12 @@ describe("Cart test", () => {
       // TODO: CRIO_TASK_MODULE_TEST - Assert if
       // - ApiError is thrown
       // - the "statusCode" field of response is "400 BAD REQUEST"
+      expect(res).rejects.toThrow(ApiError);
+      expect(res).rejects.toEqual(
+        expect.objectContaining({
+          statusCode: httpStatus.BAD_REQUEST,
+        })
+      );
     });
 
     it("should update user balance and empty the cart on success", async () => {
@@ -117,7 +140,7 @@ describe("Cart test", () => {
       expect(hasSetNonDefaultAddressMock.mock.calls.length).not.toBe(0);
 
       // TODO: CRIO_TASK_MODULE_TEST - Assert that the wallet balance of user was reduced
-       expect(true).toEqual(false);
+      expect(userOneFinal.walletMoney).toBeLessThan(userOne.walletMoney);
     });
   });
 });
