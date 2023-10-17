@@ -83,4 +83,5 @@ module.exports = {
   getCart,
   addProductToCart,
   updateProductInCart,
+  checkout,
 };

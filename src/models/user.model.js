@@ -55,12 +55,10 @@ const userSchema = mongoose.Schema(
  * @param {string} email - The user's email
  * @returns {Promise<boolean>}
  */
- userSchema.statics.isEmailTaken = async function (email) {
-  const result = await this.find({email: email});
-    if(result.length)
-      return true;
-    else
-      return false;
+userSchema.statics.isEmailTaken = async function (email) {
+  const result = await this.find({ email: email });
+  if (result.length) return true;
+  else return false;
 };
 
 // TODO: CRIO_TASK_MODULE_UNDERSTANDING_BASICS
@@ -72,6 +70,18 @@ const userSchema = mongoose.Schema(
 userSchema.methods.isPasswordMatch = async function (password) {
   const user = this;
   return bcrypt.compare(password, user.password);
+};
+
+/**
+ * Check if user have set an address other than the default address
+ * - should return true if user has set an address other than default address
+ * - should return false if user's address is the default address
+ *
+ * @returns {Promise<boolean>}
+ */
+userSchema.methods.hasSetNonDefaultAddress = async function () {
+  const user = this;
+  return user.address === config.default_address;
 };
 
 /*
