@@ -88,7 +88,7 @@ const getUserAddressById = async (id) => {
   // } catch (err) {
   //   console.log(err);
   // }
-  return User.findOne({_id:id},{email:1,address:1})
+  return User.findOne({ _id: id }, { email: 1, address: 1 });
 };
 
 /**
